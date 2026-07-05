@@ -142,10 +142,11 @@ le publie et vous rend deux liens : le **lien public** (à envoyer aux
 participants) et le **lien d'administration** (à conserver — il permet de
 modifier ou clore le sondage).
 
-### Exemple 2 — À partir d'un fichier tableur (CSV)
+### Exemple 2 — À partir d'un fichier tableur (CSV ou Excel)
 
-Si votre planning existe déjà dans un tableur, exportez-le en CSV avec quatre
-colonnes — date, lieu, heure de début, heure de fin :
+Si votre planning existe déjà dans un tableur, le plus simple et le plus fiable
+est d'exporter un CSV à quatre colonnes — date, lieu, heure de début, heure de
+fin :
 
 ```csv
 date,lieu,debut,fin
@@ -154,7 +155,24 @@ date,lieu,debut,fin
 2026-01-12,Guyancourt,14h,16h30
 ```
 
-Puis joignez le fichier à la conversation et écrivez :
+Mais la skill n'y est pas strictement limitée : elle sait aussi lire un
+fichier Excel (`.xlsx`) dont les colonnes diffèrent — par exemple
+*Année / mois / jour / lieu / heure début / heure fin* — en interprétant leur
+structure plutôt qu'en exigeant ce format précis. Concrètement, dans ce cas :
+
+- elle mappe les colonnes disponibles vers date/lieu/horaires, même si leur
+  nom ou leur ordre diffère du format ci-dessus ;
+- elle détecte les valeurs atypiques (mois écrit en toutes lettres, heure au
+  format horaire plutôt qu'un entier, etc.) et les normalise ;
+- elle repère les incohérences (date déjà passée, mois ambigu) et vous
+  demande confirmation avant toute saisie, plutôt que de les traiter
+  silencieusement.
+
+En résumé : le CSV à 4 colonnes reste le format le plus rapide à traiter, mais
+un fichier « raisonnablement lisible » (Excel ou CSV) fonctionne aussi, avec
+une étape de vérification en plus.
+
+Joignez le fichier à la conversation et écrivez :
 
 > « Crée le sondage Framadate à partir du fichier planning.csv ci-joint.
 > Titre : "Permanences hiver 2026". Mon email : prenom.nom@exemple.fr »
