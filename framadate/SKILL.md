@@ -8,6 +8,7 @@ description: >
   "permanences à X et Y du tant au tant". Déclencher aussi pour des descriptions en
   langage naturel du type "tous les mardis de 9h à 11h30 du 2 sept au 28 oct",
   ou quand un fichier CSV/Excel de planning est fourni.
+allowed-tools: Read, Bash(python3:*), WebSearch, WebFetch, ToolSearch, mcp__Claude_in_Chrome__navigate, mcp__Claude_in_Chrome__read_page, mcp__Claude_in_Chrome__form_input, mcp__Claude_in_Chrome__browser_batch, mcp__Claude_in_Chrome__get_page_text
 ---
 
 # Skill : Création de sondage de dates sur Framadate
@@ -44,6 +45,15 @@ for row in ws.iter_rows(min_row=2, values_only=True):
     print(','.join(str(c) for c in row))
 "
 ```
+
+**En cas d'échec** (`python3` introuvable, ou `ModuleNotFoundError: openpyxl`) : ne pas
+tenter d'autres invocations Python (`python`, installation d'openpyxl via pip, etc.) —
+si python3 échoue, la présence d'openpyxl dans l'environnement est de toute façon peu
+probable, et ces détours ajoutent de la fragilité pour rien. Informer directement
+l'utilisateur que la lecture du fichier Excel a échoué sur ce système et proposer une
+conversion en CSV, par exemple : « Impossible de lire le fichier Excel ici (Python/openpyxl
+absent). Peux-tu l'exporter en CSV (Fichier > Enregistrer sous > CSV) et me le fournir ? »
+Reprendre ensuite le Mode A avec le fichier CSV fourni.
 
 Construire ensuite la structure dates/slots à partir des lignes lues.
 
