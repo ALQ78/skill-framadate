@@ -113,6 +113,10 @@ plan. Dans tous les cas, les onglets utilisés restent ouverts à la fin : vous
 pouvez inspecter après coup exactement ce qui a été fait, et Claude vous
 demande votre accord aux étapes qui comptent (notamment la validation des dates
 avant toute saisie). Vos identifiants et cookies restent dans votre navigateur.
+La skill déclare à l'avance les outils dont elle a besoin (lecture de fichiers,
+navigation Chrome, recherche web), ce qui évite des popups de confirmation à
+chaque étape — mais Claude vous demande toujours votre accord avant les actions
+qui comptent, notamment la validation des dates.
 
 **Pour désinstaller** : supprimez la skill au même endroit des paramètres. La
 recette est retirée, il ne reste rien.
@@ -214,6 +218,10 @@ au lieu de découvrir une date fausse quand les bénévoles ont déjà répondu.
 - Claude Cowork est en avant-première : noms de menus et boutons peuvent bouger.
 - Comme toute automatisation de navigateur, une page qui met du temps à charger
   peut demander à Claude un deuxième essai. Il vous le dira.
+- La lecture des fichiers Excel (`.xlsx`) dépend de Python (`python3`) et de la
+  bibliothèque `openpyxl` sur votre système. Si l'un des deux manque, Claude
+  vous le dira directement et vous proposera d'exporter votre fichier en CSV
+  plutôt que de multiplier les tentatives infructueuses.
 
 ## Licence et contributions
 
