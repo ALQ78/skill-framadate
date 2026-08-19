@@ -1,0 +1,88 @@
+{
+  "skill_name": "framadate",
+  "note": "Transcription des 5 tests manuels du 2026-07-05 (journal original : vault Obsidian, note 'Test_Framadate_2026_07_05'). Jeu de tests documenté pour lecture et exécution manuelle ponctuelle — pas branché sur une CI automatique : chaque exécution crée un vrai sondage sur beta.framadate.org, ce qui n'est pas souhaitable à chaque commit. Les fixtures des tests 3 et 5 ont été généralisées avec des données génériques (déjà utilisées comme exemples dans SKILL.md) pour ne pas exposer de contenu personnel dans ce repo public.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "cas-nominal-simple",
+      "source": "Test manuel du 2026-07-05, Test 1 — résultat original : réussi",
+      "prompt": "Crée avec mon nom et mon mail un sondage Framadate pour demain de 9h à 10h.",
+      "files": [],
+      "expected_output": "Un sondage publié avec un seul créneau, correspondant à la date de demain, 9h-10h. Lien public et lien admin restitués.",
+      "assertions": [
+        "Le sondage est publié sur beta.framadate.org sans erreur",
+        "Une seule date est saisie, correspondant à 'demain' par rapport à la date du jour d'exécution",
+        "Le créneau horaire saisi correspond à 9h-10h",
+        "Le lien public et le lien admin sont tous deux extraits et restitués à l'utilisateur"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "garde-fou-date-invalide",
+      "source": "Test manuel du 2026-07-05, Test 2 — piège intentionnel, résultat original : garde-fou déclenché comme attendu",
+      "prompt": "Crée un sondage Framadate 'Test2', pour le 29 février 2027, toute la journée, à Guyancourt.",
+      "files": [],
+      "expected_output": "Aucune navigation Chrome n'est lancée. La skill détecte que le 29 février 2027 n'existe pas (2027 n'est pas bissextile) et interroge l'utilisateur avant toute action.",
+      "assertions": [
+        "Aucun outil de navigation Chrome n'est invoqué avant que l'anomalie soit signalée",
+        "L'invalidité de la date (29/02/2027, année non bissextile) est explicitement détectée et énoncée",
+        "Aucun sondage n'est créé sur beta.framadate.org",
+        "Une question est posée à l'utilisateur sur la suite à donner plutôt qu'une correction silencieuse"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "fichier-source-non-conforme",
+      "source": "Test manuel du 2026-07-05, Test 3 — résultat original : réussi, appréciation 'Excellent'",
+      "prompt": "Lis le fichier de planning ci-joint et génère le sondage Framadate correspondant.",
+      "files": [
+        {
+          "name": "planning.csv",
+          "description": "Fixture générique reconstituant le cas réel : colonnes non standard (Année, mois, jour, lieu, heure début, heure fin — au lieu du format CSV à 4 colonnes documenté), mois écrit en toutes lettres, une date déjà passée par rapport à 'aujourd'hui'.",
+          "content": "Année,mois,jour,lieu,heure début,heure fin\n2026,7,1,Saint-Cyr,9h,10h\n2026,Aout,1,Bois d'Arcy,11h,13h30\n"
+        }
+      ],
+      "expected_output": "Le fichier est lu malgré des colonnes différentes du format documenté. Deux anomalies sont signalées avant toute saisie (date déjà passée ; mois en texte 'Aout' déduit comme août), avec confirmation demandée. Le sondage est ensuite publié avec les créneaux corrects.",
+      "assertions": [
+        "Le fichier est lu et interprété malgré des colonnes différentes du format CSV documenté dans SKILL.md",
+        "La date déjà passée par rapport à la date du jour est signalée avant saisie, pas traitée silencieusement",
+        "Le mois écrit en toutes lettres est interprété et sa lecture confirmée par l'utilisateur avant saisie",
+        "Le sondage est publié avec les créneaux corrects une fois les deux points confirmés"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "recurrence-longue-exclusions-et-nettoyage-bouton",
+      "source": "Test manuel du 2026-07-05, Test 4 — résultat original : réussi ; a révélé un comportement du site (bouton 'mêmes horaires' laissant un créneau par défaut résiduel) qui devait être documenté dans SKILL.md",
+      "prompt": "Sondage Framadate, rendez-vous de 12h à 1h tous les jours sauf fériés et week-end, du 16 décembre 2026 au 10 janvier.",
+      "files": [],
+      "expected_output": "L'incohérence de l'horaire ('12h à 1h', amplitude de 13h) et l'ambiguïté de l'année du '10 janvier' sont signalées et clarifiées avant saisie. Les week-ends et jours fériés fixes (Noël, Jour de l'an) sont exclus, soit 16 dates retenues. Après usage du bouton 'Appliquer les mêmes horaires', aucun créneau par défaut résiduel ne subsiste dans le sondage publié.",
+      "assertions": [
+        "L'incohérence de l'horaire '12h à 1h' est signalée et une clarification est demandée avant saisie",
+        "L'année ambiguë du '10 janvier' est clarifiée avant saisie",
+        "Les week-ends et les jours fériés fixes de la période sont exclus du calcul, aboutissant à 16 dates retenues",
+        "Aucun créneau par défaut ('Journée') résiduel ne subsiste après usage du bouton 'Appliquer les mêmes horaires' — régression directe du comportement trouvé lors du test original du 2026-07-05"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "cas-production-reel-avec-verification-externe",
+      "source": "Test manuel du 2026-07-05, Test 5 — premier cas d'usage réel de bout en bout, appréciation 'plus qu'excellent'",
+      "prompt": "Génère le sondage Framadate pour les permanences récurrentes décrites dans la note jointe, en te basant sur le motif hebdomadaire qu'elle indique, pour la période allant de la rentrée scolaire jusqu'à la Toussaint (zone C).",
+      "files": [
+        {
+          "name": "motif-recurrent.md",
+          "description": "Fixture générique reconstituant le cas réel : motif hebdomadaire à déduire sans reprécision, période bornée par le calendrier scolaire officiel.",
+          "content": "Permanences hebdomadaires :\n- Mardi : Saint-Cyr (9h-11h30) et Bois d'Arcy (9h-11h30)\n- Jeudi : Fontenay (9h-11h30)\n\nPériode : de la rentrée scolaire zone C à la veille des vacances de la Toussaint, année 2026-2027.\n"
+        }
+      ],
+      "expected_output": "Le motif hebdomadaire (jours, lieux, horaires différents mardi/jeudi) est déduit de la note fournie sans que l'utilisateur ait à le repréciser. Les dates de rentrée et de début des vacances de la Toussaint (zone C) sont vérifiées via une source officielle, pas supposées de mémoire. Le sondage publié compte le nombre correct de dates et de créneaux.",
+      "assertions": [
+        "Le motif hebdomadaire récurrent (jours, lieux, horaires) est déduit de la note fournie sans reprécision de l'utilisateur",
+        "Les dates du calendrier scolaire (rentrée, début des vacances de la Toussaint, zone C) sont vérifiées via une recherche web sur une source officielle, pas supposées de mémoire",
+        "Le nombre de dates et de créneaux du sondage publié correspond au calcul attendu à partir de la période et du motif",
+        "Les créneaux du mardi (2 lieux) et du jeudi (1 lieu) sont saisis correctement, sans confusion entre les deux motifs"
+      ]
+    }
+  ]
+}
