@@ -52,16 +52,24 @@ activité associative. Elle fonctionne pour n'importe quel sondage de dates.
 
 ## 3. Ce qu'il vous faut avant de commencer
 
-- Un abonnement **Claude Pro** (ou supérieur) chez Anthropic.
-- L'application **Claude pour ordinateur** (macOS ou Windows), avec le mode
-  **Cowork** — c'est le mode où Claude peut utiliser des outils. À la date
-  d'écriture, Cowork est en avant-première (« research preview ») : les menus
-  peuvent évoluer.
-- Le navigateur **Google Chrome**, avec l'extension **Claude in Chrome**
-  installée et connectée. C'est par elle que Claude pilote Framadate — le site
-  n'ayant pas d'interface pour programmes, Claude utilise un vrai navigateur,
-  comme vous le feriez. **Chrome doit être lancé au moment où vous faites votre
-  demande** : si l'application est fermée, Claude ne peut pas agir dessus.
+- Un abonnement direct chez Anthropic : **Claude Pro** (ou supérieur — Max,
+  Team, Enterprise).
+- Un environnement Claude capable de charger des skills et de piloter un
+  navigateur — deux options au choix, ce n'est pas réservé à un seul produit :
+  - L'application **Claude pour ordinateur** (macOS ou Windows), en mode
+    **Cowork** — le mode où Claude peut utiliser des outils. À la date
+    d'écriture, Cowork est en avant-première (« research preview ») : les
+    menus peuvent évoluer.
+  - **Claude Code** (en ligne de commande, ou dans l'extension VS Code), avec
+    la connexion Chrome activée : lancez-le avec `claude --chrome`, ou tapez
+    `/chrome` dans une session déjà ouverte pour l'activer.
+- Le navigateur **Google Chrome** (ou un navigateur Chromium compatible :
+  Edge, Brave, Arc, Vivaldi, Opera), avec l'extension **Claude in Chrome**
+  installée et connectée — voir la section suivante pour l'installation.
+  C'est par elle que Claude pilote Framadate — le site n'ayant pas
+  d'interface pour programmes, Claude utilise un vrai navigateur, comme vous
+  le feriez. **Le navigateur doit être lancé au moment où vous faites votre
+  demande** : s'il est fermé, Claude ne peut pas agir dessus.
 
 ## 4. Récupérer la skill
 
