@@ -164,6 +164,14 @@ La page affiche des champs texte par date. Les noms de champs suivent ce pattern
 horaires à toutes les dates" — il duplique automatiquement les créneaux de la première
 date sur toutes les autres. Remplir seulement la première date, puis utiliser ce bouton.
 
+**Piège observé** : ce bouton n'écrase pas toujours le créneau par défaut "Journée"
+présent sur chaque date — il peut l'ajouter en plus (ex. "Journée" en Horaire 1, le
+créneau saisi en Horaire 2) plutôt que de le remplacer. Après avoir cliqué ce bouton,
+toujours faire un `read_page` pour vérifier qu'aucun créneau "Journée" résiduel ne
+subsiste sur les dates autres que la première, et le supprimer si c'est le cas — une
+saisie non vérifiée publierait un sondage avec un horaire "Journée" en trop sur chaque
+date.
+
 **Sinon** : pour chaque date I, remplir chaque créneau J :
 ```
 form_input → poll_slots[dates][0][proposals][0][label] = "Saint-Cyr 9h-11h30"
